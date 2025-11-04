@@ -1,0 +1,13 @@
+<div *ngIf="!editing" class="bg-gray-50 p-3 rounded shadow-sm hover:bg-gray-100 cursor-pointer" (dblclick)="startEdit()">
+  {{ task.title }}
+</div>
+
+<div *ngIf="editing" class="bg-white p-2 rounded shadow-sm border border-blue-400">
+  <input
+    [(ngModel)]="editedTitle"
+    (keyup.enter)="saveEdit()"
+    (blur)="saveEdit()"
+    class="w-full border-b-2 border-blue-500 outline-none text-sm"
+    autofocus
+  />
+</div>

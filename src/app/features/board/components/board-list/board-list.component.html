@@ -1,0 +1,80 @@
+<div class="bg-white rounded-lg shadow-md w-72 p-4 flex-shrink-0">
+  <!-- Editable title -->
+  <div *ngIf="!editingTitle" class="mb-3 flex justify-between items-center">
+    <h2
+      class="text-lg font-semibold cursor-pointer"
+      (dblclick)="startEdit()"
+    >
+      {{ list.name }}
+    </h2>
+    <button
+      (click)="startEdit()"
+      class="text-gray-400 hover:text-black text-sm"
+      title="Rename list"
+    >
+      ✏️
+    </button>
+  </div>
+
+  <input
+    *ngIf="editingTitle"
+    type="text"
+    [value]="list.name"
+    (blur)="finishEdit($event)"
+    (keyup.enter)="finishEdit($event)"
+    class="border-b-2 border-blue-500 outline-none w-full mb-3 text-lg font-semibold"
+    autofocus
+  />
+
+  <!-- Cards -->
+  <div
+    cdkDropList
+    [cdkDropListData]="list.tasks"
+    (cdkDropListDropped)="drop($event)"
+    class="space-y-2 min-h-[50px]"
+  >
+    <app-board-card
+      *ngFor="let task of list.tasks"
+      [task]="task"
+      cdkDrag
+    ></app-board-card>
+  </div>
+  <!-- Add card area -->
+<div class="mt-3">
+  <!-- Add button -->
+  <button
+    *ngIf="!addingCard"
+    (click)="addCard()"
+    class="text-gray-500 text-sm hover:text-black hover:underline"
+  >
+    + Add Card
+  </button>
+
+  <!-- Input for new card -->
+  <div *ngIf="addingCard" class="flex flex-col space-y-2">
+    <input
+      id="newCardInput-{{ list.id }}"
+      type="text"
+      [(ngModel)]="newCardTitle"
+      (keyup.enter)="saveNewCard()"
+      placeholder="Enter card title..."
+      class="border border-gray-300 rounded px-2 py-1 text-sm"
+    />
+    <div class="flex space-x-2">
+      <button
+        (click)="saveNewCard()"
+        class="bg-blue-600 text-white px-3 py-1 rounded text-sm"
+      >
+        Add
+      </button>
+      <button
+        (click)="addingCard = false; newCardTitle = ''"
+        class="text-gray-500 text-sm hover:text-black"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+</div>

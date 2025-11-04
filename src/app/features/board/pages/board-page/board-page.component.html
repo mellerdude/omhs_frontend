@@ -1,0 +1,18 @@
+<div class="p-6 bg-gray-100 min-h-screen">
+  <h1 class="text-3xl font-bold mb-6">My Board</h1>
+
+  <div cdkDropListGroup class="flex space-x-4 overflow-x-auto pb-4">
+    <app-board-list
+      *ngFor="let list of boardLists"
+      [list]="list"
+    ></app-board-list>
+
+    <!-- Add new list button -->
+    <button
+      (click)="addList()"
+      class="w-72 h-14 flex-shrink-0 rounded-lg border-2 border-dashed border-gray-400 text-gray-500 hover:bg-gray-100 hover:text-black transition"
+    >
+      + Add List
+    </button>
+  </div>
+</div>
