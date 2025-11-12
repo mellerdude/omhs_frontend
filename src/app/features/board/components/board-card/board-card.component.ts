@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { basicNG } from '../../../../shared/shared-imports';
 
 interface Task {
   id: string;
@@ -10,7 +9,7 @@ interface Task {
 @Component({
   selector: 'app-board-card',
   standalone: true,
-  imports: [NgIf, FormsModule],
+  imports: [basicNG],
   templateUrl: './board-card.component.html',
 })
 export class BoardCardComponent {

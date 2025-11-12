@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
 import { BoardListComponent } from '../../components/board-list/board-list.component';
-import { CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
+import { basicDragDrop, basicNG } from '../../../../shared/shared-imports';
 
 interface Task {
   id: string;
@@ -19,7 +18,7 @@ interface BoardList {
 @Component({
   selector: 'app-board-page',
   standalone: true,
-  imports: [NgFor, BoardListComponent, CdkDropListGroup],
+  imports: [basicNG, BoardListComponent, basicDragDrop],
   templateUrl: './board-page.component.html',
 })
 export class BoardPageComponent {

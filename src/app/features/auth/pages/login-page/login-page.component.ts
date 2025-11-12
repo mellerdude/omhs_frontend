@@ -1,13 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
+import { basicNav, basicNG } from '../../../../shared/shared-imports';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-login-page',
-  imports: [CommonModule, FormsModule],
+  imports: [basicNav, basicNG],
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css']
 })

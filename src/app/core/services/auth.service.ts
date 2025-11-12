@@ -14,10 +14,35 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(username: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.base}/login`, { username, password })
-      .pipe(
-        tap(res => localStorage.setItem('auth_token', res.token))
-      );
+    return this.http
+      .post<LoginResponse>(`${this.base}/login`, { username, password })
+      .pipe(tap((res) => localStorage.setItem('auth_token', res.token)));
+  }
+
+  register(username: string, email: string, password: string) {
+    return this.http.post(`${this.base}/register`, {
+      username,
+      email,
+      password,
+    });
+  }
+
+  forgotPassword(username: string, email: string) {
+    return this.http.post(`${this.base}/reset-password`, { username, email });
+  }
+
+  resetPassword(
+    username: string,
+    email: string,
+    passkey: string,
+    newPassword: string
+  ) {
+    return this.http.post(`${this.base}/change-password`, {
+      username,
+      email,
+      passkey,
+      newPassword,
+    });
   }
 
   logout() {

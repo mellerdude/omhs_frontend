@@ -1,13 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
 import { BoardCardComponent } from '../board-card/board-card.component';
-import {
-  DragDropModule,
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
-import { FormsModule } from '@angular/forms';
+
+import { basicDragDrop, basicNG } from '../../../../shared/shared-imports';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 interface Task {
   id: string;
@@ -23,7 +18,7 @@ interface BoardList {
 @Component({
   selector: 'app-board-list',
   standalone: true,
-  imports: [NgIf, NgFor, FormsModule, BoardCardComponent, DragDropModule],
+  imports: [basicNG, BoardCardComponent, basicDragDrop],
   templateUrl: './board-list.component.html',
 })
 export class BoardListComponent {
