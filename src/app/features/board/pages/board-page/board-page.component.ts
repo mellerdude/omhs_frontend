@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { BoardListComponent } from '../../components/board-list/board-list.component';
 import { CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../../core/services/auth.service';
 
 interface Task {
   id: string;
@@ -21,6 +23,8 @@ interface BoardList {
   templateUrl: './board-page.component.html',
 })
 export class BoardPageComponent {
+  constructor(private auth: AuthService, private router: Router) {}
+
   boardLists: BoardList[] = [
     {
       id: '1',
@@ -49,5 +53,10 @@ export class BoardPageComponent {
       tasks: [],
     };
     this.boardLists.push(newList);
+  }
+
+  onLogout(): void {
+  this.auth.logout();
+  this.router.navigateByUrl('/auth/login', { replaceUrl: true });
   }
 }
