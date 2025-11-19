@@ -1,0 +1,13 @@
+:host {
+  position: relative;
+  display: block;
+}
+
+.delete-btn {
+  top: 6px !important;      /* lower from the top */
+  right: 6px;
+}
+
+.card-container {
+  padding-top: 8px;         /* creates breathing room for emoji */
+}

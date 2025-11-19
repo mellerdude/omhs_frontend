@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 export interface Task {
   id: string;
   title: string;
+  emoji?: string;
 }
 
 export interface BoardList {

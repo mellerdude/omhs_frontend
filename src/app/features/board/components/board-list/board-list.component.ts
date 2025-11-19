@@ -11,6 +11,7 @@ import {
 interface Task {
   id: string;
   title: string;
+  emoji?: string;
 }
 
 interface BoardList {
@@ -47,6 +48,7 @@ export class BoardListComponent {
       this.list.tasks.push({
         id: Date.now().toString(),
         title,
+        emoji: '📌',
       });
       this.changed.emit();
     }

@@ -1,25 +1,41 @@
 <div class="relative group">
-  <div class="p-3 bg-white rounded shadow cursor-pointer" (dblclick)="startEdit()">
-    <!-- Card title OR editor -->
+
+  <div class="p-3 bg-white rounded shadow cursor-pointer flex items-center space-x-2" (dblclick)="startEdit()"
+    (click)="$event.stopPropagation()">
+
+    <!-- Emoji inline -->
+    <span class="text-xl cursor-pointer" (click)="togglePicker($event)">
+      {{ task.emoji || '📌' }}
+    </span>
+
+    <!-- Picker -->
+    <div *ngIf="showPicker"
+     class="fixed z-50 bg-white border rounded shadow"
+     [style.left.px]="pickerLeft"
+     [style.top.px]="pickerTop"
+     (click)="$event.stopPropagation()">
+
+
+      <emoji-picker *ngIf="showPicker" class="absolute left-0 top-10 z-50" (emoji-click)="selectEmoji($event)">
+      </emoji-picker>
+
+    </div>
+
+    <!-- Title -->
     <ng-container *ngIf="!editing; else editMode">
-      {{ task.title }}
+      <span class="text-sm">{{ task.title }}</span>
     </ng-container>
 
     <ng-template #editMode>
-      <input
-        [(ngModel)]="editedTitle"
-        (blur)="saveEdit()"
-        (keyup.enter)="saveEdit()"
-        class="border p-1 w-full"
-      />
+      <input [(ngModel)]="editedTitle" (blur)="saveEdit()" (keyup.enter)="saveEdit()" class="border p-1 text-sm" />
     </ng-template>
+
   </div>
 
-  <!-- ❌ delete button (only appears on hover) -->
-  <button
-    class="absolute top-1 right-1 text-red-600 opacity-0 group-hover:opacity-100 transition"
-    (click)="delete.emit()"
-  >
+  <!-- Delete button -->
+  <button class="absolute top-1 right-1 text-red-600 opacity-0 group-hover:opacity-100 transition" style="margin-top: 10px;"
+    (click)="delete.emit()">
     ✕
   </button>
+
 </div>
