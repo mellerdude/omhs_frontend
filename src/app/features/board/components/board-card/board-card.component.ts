@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { basicNG } from '../../../../shared/shared-imports';
 
 interface Task {
@@ -14,6 +14,8 @@ interface Task {
 })
 export class BoardCardComponent {
   @Input() task!: Task;
+  @Output() changed = new EventEmitter<void>();
+
   editing = false;
   editedTitle = '';
 
@@ -26,6 +28,7 @@ export class BoardCardComponent {
     const title = this.editedTitle.trim();
     if (title) {
       this.task.title = title;
+      this.changed.emit();    // 🔥 notify parent
     }
     this.editing = false;
   }

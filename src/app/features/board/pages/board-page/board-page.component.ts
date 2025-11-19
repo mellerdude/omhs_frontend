@@ -1,19 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BoardListComponent } from '../../components/board-list/board-list.component';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { basicDragDrop, basicNG } from '../../../../shared/shared-imports';
-
-interface Task {
-  id: string;
-  title: string;
-}
-
-interface BoardList {
-  id: string;
-  name: string;
-  tasks: Task[];
-}
+import { KanbanService, Kanban, BoardList } from '../../../../core/services/kanban.service';
 
 @Component({
   selector: 'app-board-page',
@@ -21,41 +11,46 @@ interface BoardList {
   imports: [basicNG, BoardListComponent, basicDragDrop],
   templateUrl: './board-page.component.html',
 })
-export class BoardPageComponent {
-  constructor(private auth: AuthService, private router: Router) {}
+export class BoardPageComponent implements OnInit {
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private kanban: KanbanService
+  ) {}
 
-  boardLists: BoardList[] = [
-    {
-      id: '1',
-      name: 'To Do',
-      tasks: [
-        { id: 't1', title: '📝 Setup project structure' },
-        { id: 't2', title: '🔧 Configure Tailwind' },
-      ],
-    },
-    {
-      id: '2',
-      name: 'In Progress',
-      tasks: [{ id: 't3', title: '💻 Build board page' }],
-    },
-    {
-      id: '3',
-      name: 'Done',
-      tasks: [{ id: 't4', title: '✅ Setup Angular project' }],
-    },
-  ];
+  kanbanData!: Kanban;
+  boardLists: BoardList[] = [];
+
+  ngOnInit(): void {
+    this.kanban.getKanban().subscribe({
+      next: (res) => {
+        this.kanbanData = res;
+        this.boardLists = res.boards[0].lists;
+      },
+      error: () => {
+        console.error('Failed to load kanban');
+      }
+    });
+  }
 
   addList() {
     const newList: BoardList = {
       id: Date.now().toString(),
-      name: 'New List',
+      title: 'New List', // <-- FIXED HERE
       tasks: [],
     };
+
     this.boardLists.push(newList);
+    this.save();
+  }
+
+  save() {
+    this.kanbanData.boards[0].lists = this.boardLists;
+    this.kanban.updateKanban(this.kanbanData).subscribe();
   }
 
   onLogout(): void {
-  this.auth.logout();
-  this.router.navigateByUrl('/auth/login', { replaceUrl: true });
+    this.auth.logout();
+    this.router.navigateByUrl('/auth/login', { replaceUrl: true });
   }
 }

@@ -5,7 +5,7 @@
       class="text-lg font-semibold cursor-pointer"
       (dblclick)="startEdit()"
     >
-      {{ list.name }}
+      {{ list.title }}
     </h2>
     <button
       (click)="startEdit()"
@@ -19,7 +19,7 @@
   <input
     *ngIf="editingTitle"
     type="text"
-    [value]="list.name"
+    [value]="list.title"
     (blur)="finishEdit($event)"
     (keyup.enter)="finishEdit($event)"
     class="border-b-2 border-blue-500 outline-none w-full mb-3 text-lg font-semibold"

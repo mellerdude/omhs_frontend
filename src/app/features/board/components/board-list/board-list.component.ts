@@ -1,8 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { BoardCardComponent } from '../board-card/board-card.component';
 
 import { basicDragDrop, basicNG } from '../../../../shared/shared-imports';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 
 interface Task {
   id: string;
@@ -11,10 +15,9 @@ interface Task {
 
 interface BoardList {
   id: string;
-  name: string;
+  title: string;
   tasks: Task[];
 }
-
 @Component({
   selector: 'app-board-list',
   standalone: true,
@@ -23,14 +26,16 @@ interface BoardList {
 })
 export class BoardListComponent {
   @Input() list!: BoardList;
+  @Output() changed = new EventEmitter<void>();
+
   editingTitle = false;
   addingCard = false;
   newCardTitle = '';
+
   addCard() {
     this.addingCard = true;
     setTimeout(() => {
-      const input = document.getElementById(`newCardInput-${this.list.id}`);
-      input?.focus();
+      document.getElementById(`newCardInput-${this.list.id}`)?.focus();
     });
   }
 
@@ -41,18 +46,21 @@ export class BoardListComponent {
         id: Date.now().toString(),
         title,
       });
+      this.changed.emit(); // 🔥 notify parent
     }
     this.newCardTitle = '';
     this.addingCard = false;
   }
+
   startEdit() {
     this.editingTitle = true;
   }
 
   finishEdit(event: Event) {
     const input = event.target as HTMLInputElement;
-    this.list.name = input.value.trim() || this.list.name;
+    this.list.title = input.value.trim() || this.list.title;
     this.editingTitle = false;
+    this.changed.emit(); // 🔥 notify parent
   }
 
   drop(event: CdkDragDrop<any[]>) {
@@ -70,5 +78,7 @@ export class BoardListComponent {
         event.currentIndex
       );
     }
+
+    this.changed.emit(); // 🔥 notify parent on drag drop
   }
 }

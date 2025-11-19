@@ -14,10 +14,12 @@
   <!-- Board Content -->
   <div class="flex-1 p-6">
     <div cdkDropListGroup class="flex space-x-4 overflow-x-auto pb-4">
-      <app-board-list
-        *ngFor="let list of boardLists"
-        [list]="list"
-      ></app-board-list>
+<app-board-list
+  *ngFor="let list of boardLists"
+  [list]="list"
+  (changed)="save()">
+</app-board-list>
+
 
       <!-- Add new list button -->
       <button
