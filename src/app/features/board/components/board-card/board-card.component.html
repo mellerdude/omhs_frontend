@@ -1,13 +1,25 @@
-<div *ngIf="!editing" class="bg-gray-50 p-3 rounded shadow-sm hover:bg-gray-100 cursor-pointer" (dblclick)="startEdit()">
-  {{ task.title }}
-</div>
+<div class="relative group">
+  <div class="p-3 bg-white rounded shadow cursor-pointer" (dblclick)="startEdit()">
+    <!-- Card title OR editor -->
+    <ng-container *ngIf="!editing; else editMode">
+      {{ task.title }}
+    </ng-container>
 
-<div *ngIf="editing" class="bg-white p-2 rounded shadow-sm border border-blue-400">
-  <input
-    [(ngModel)]="editedTitle"
-    (keyup.enter)="saveEdit()"
-    (blur)="saveEdit()"
-    class="w-full border-b-2 border-blue-500 outline-none text-sm"
-    autofocus
-  />
+    <ng-template #editMode>
+      <input
+        [(ngModel)]="editedTitle"
+        (blur)="saveEdit()"
+        (keyup.enter)="saveEdit()"
+        class="border p-1 w-full"
+      />
+    </ng-template>
+  </div>
+
+  <!-- ❌ delete button (only appears on hover) -->
+  <button
+    class="absolute top-1 right-1 text-red-600 opacity-0 group-hover:opacity-100 transition"
+    (click)="delete.emit()"
+  >
+    ✕
+  </button>
 </div>

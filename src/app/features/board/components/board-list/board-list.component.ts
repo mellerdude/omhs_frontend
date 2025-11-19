@@ -26,6 +26,8 @@ interface BoardList {
 })
 export class BoardListComponent {
   @Input() list!: BoardList;
+  @Input() connectedTaskLists: string[] = [];
+  @Output() deleteList = new EventEmitter<void>();
   @Output() changed = new EventEmitter<void>();
 
   editingTitle = false;
@@ -46,7 +48,7 @@ export class BoardListComponent {
         id: Date.now().toString(),
         title,
       });
-      this.changed.emit(); // 🔥 notify parent
+      this.changed.emit();
     }
     this.newCardTitle = '';
     this.addingCard = false;
@@ -60,10 +62,10 @@ export class BoardListComponent {
     const input = event.target as HTMLInputElement;
     this.list.title = input.value.trim() || this.list.title;
     this.editingTitle = false;
-    this.changed.emit(); // 🔥 notify parent
+    this.changed.emit();
   }
 
-  drop(event: CdkDragDrop<any[]>) {
+  drop(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -78,7 +80,11 @@ export class BoardListComponent {
         event.currentIndex
       );
     }
+    this.changed.emit();
+  }
 
-    this.changed.emit(); // 🔥 notify parent on drag drop
+  deleteTask(index: number) {
+    this.list.tasks.splice(index, 1);
+    this.changed.emit();
   }
 }

@@ -3,32 +3,47 @@
   <!-- Top Bar -->
   <div class="flex justify-between items-center p-4 bg-white shadow-sm">
     <h1 class="text-2xl font-bold text-gray-800">My Board</h1>
-    <button
-      (click)="onLogout()"
-      class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded transition"
-    >
+    <button (click)="onLogout()"
+      class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded transition">
       Logout
     </button>
   </div>
 
-  <!-- Board Content -->
-  <div class="flex-1 p-6">
-    <div cdkDropListGroup class="flex space-x-4 overflow-x-auto pb-4">
-<app-board-list
-  *ngFor="let list of boardLists"
-  [list]="list"
-  (changed)="save()">
-</app-board-list>
+  <!-- BOARD CONTENT -->
+<div class="flex-1 p-6">
 
+  <!-- The horizontal list strip -->
+  <div
+    cdkDropList
+    [cdkDropListData]="boardLists"
+    (cdkDropListDropped)="onListDropped($event)"
+    cdkDropListOrientation="horizontal"
+    class="flex space-x-4 overflow-x-auto pb-4"
+  >
 
-      <!-- Add new list button -->
-      <button
-        (click)="addList()"
-        class="w-72 h-14 flex-shrink-0 rounded-lg border-2 border-dashed border-gray-400 text-gray-500 hover:bg-gray-100 hover:text-black transition"
+    <!-- Each list column -->
+    <div
+      *ngFor="let list of boardLists; let i = index"
+      cdkDrag
+      class="w-72 flex-shrink-0"
+    >
+      <app-board-list
+        [list]="list"
+        [connectedTaskLists]="connectedTaskLists"
+        (changed)="save()"
+        (deleteList)="removeList(i)"
       >
-        + Add List
-      </button>
+      </app-board-list>
     </div>
-  </div>
 
+    <!-- Add new list button -->
+    <button
+      (click)="addList()"
+      class="w-72 h-14 flex-shrink-0 rounded-lg border-2 border-dashed border-gray-400 text-gray-500
+             hover:bg-gray-100 hover:text-black transition"
+    >
+      + Add List
+    </button>
+
+  </div>
 </div>

@@ -14,6 +14,7 @@ interface Task {
 })
 export class BoardCardComponent {
   @Input() task!: Task;
+  @Output() delete = new EventEmitter<void>();
   @Output() changed = new EventEmitter<void>();
 
   editing = false;
